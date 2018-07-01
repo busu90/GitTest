@@ -17,7 +17,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        print("Documents Directory: ", FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last ?? "Not Found!")
+        self.window = UIWindow(frame: UIScreen.main.bounds)
+        self.window?.rootViewController = Configurator.configureMainNav()
+        self.window?.makeKeyAndVisible()
         return true
     }
 

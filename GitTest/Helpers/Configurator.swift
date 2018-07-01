@@ -18,4 +18,28 @@ class Configurator {
         details.presenter = presenter
         return details
     }
+    
+    static func configureRepoList(forFavorites: Bool = false) ->  RepositoriesViewController{
+        let repoListView = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "repoListController") as! RepositoriesViewController
+        
+        let presenter = RepositoriesPresenterImplementation(view: repoListView, forFavorites: forFavorites)
+        repoListView.presenter = presenter
+        return repoListView
+    }
+    
+    static func configureMainTabBar() ->  UITabBarController{
+        let tabBarController = UITabBarController()
+        let list = configureRepoList()
+        let favs = configureRepoList(forFavorites: true)
+        list.tabBarItem = UITabBarItem(title: "Repositories", image: #imageLiteral(resourceName: "RepositoriesTabIcon"), tag: 0)
+        favs.tabBarItem = UITabBarItem(tabBarSystemItem: .favorites, tag: 1)
+        tabBarController.viewControllers = [list, favs]
+        return tabBarController
+    }
+    static func configureMainNav() -> UINavigationController{
+        let navController = UINavigationController()
+        let tab = configureMainTabBar()
+        navController.viewControllers = [tab]
+        return navController
+    }
 }

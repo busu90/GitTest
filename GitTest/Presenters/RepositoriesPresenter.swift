@@ -16,6 +16,7 @@ protocol RepositoriesPresenter: class {
     func getRepoCount() -> Int
     func showDetailForRepo(at: Int)
     func handleFavorite(repoAt : Int)
+    func showPeriodSelect() -> Bool
 }
 
 class RepositoriesPresenterImplementation: RepositoriesPresenter{
@@ -24,9 +25,11 @@ class RepositoriesPresenterImplementation: RepositoriesPresenter{
     private var repoProvider = RepositoryProvider()
     private var favoritesProvider = LocalRepositoryProvider()
     
-    init(view: RepositoriesView) {
+    private var forFavorites: Bool
+    
+    init(view: RepositoriesView, forFavorites: Bool) {
         self.view = view
-        
+        self.forFavorites = forFavorites
         NotificationCenter.default.addObserver(self, selector: #selector(managedObjectContextObjectsDidChange), name: NSNotification.Name.NSManagedObjectContextObjectsDidChange, object: favoritesProvider.context)
     }
     
@@ -60,7 +63,11 @@ class RepositoriesPresenterImplementation: RepositoriesPresenter{
     }
     
     func viewDidLoad() {
-        periodChanged(to: 0)
+        if forFavorites{
+            repositories = favoritesProvider.getFavorites()
+        }else{
+            periodChanged(to: 0)
+        }
     }
     
     func periodChanged(to: Int) {
@@ -125,5 +132,7 @@ class RepositoriesPresenterImplementation: RepositoriesPresenter{
         }
         view?.reloadRepozitories()
     }
-    
+    func showPeriodSelect() -> Bool {
+        return !forFavorites
+    }
 }

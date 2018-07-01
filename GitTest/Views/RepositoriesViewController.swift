@@ -22,11 +22,9 @@ class RepositoriesViewController: UIViewController{
     
     private var repoDataSource: RepositoriesCollectionDataSource!
     private var repoDelegate: RepositoriesCollectionDelegate!
-    private var presenter: RepositoriesPresenter!
+    var presenter: RepositoriesPresenter!
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        presenter = RepositoriesPresenterImplementation(view: self)
         repoDataSource = RepositoriesCollectionDataSource(presenter: presenter)
         repoDelegate = RepositoriesCollectionDelegate(presenter: presenter)
         
@@ -34,17 +32,26 @@ class RepositoriesViewController: UIViewController{
         repoCollection.delegate = repoDelegate
         repoCollection.collectionViewLayout = RepositoriesFlowLayout(cellHeight: 80)
         repoCollection.register(UINib(nibName: "RepositoryCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: RepositoryCollectionViewCell.repositoryCellIdentifier)
-        configureNavBar()
+        if presenter.showPeriodSelect(){
+            configureNavBar()
+        }
         presenter.viewDidLoad()
         
     }
     
-    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if presenter.showPeriodSelect(){
+            self.tabBarController?.navigationItem.titleView?.isHidden = false
+        }else{
+           self.tabBarController?.navigationItem.titleView?.isHidden = true
+        }
+    }
     
     private func configureNavBar(){
         let segment: UISegmentedControl = UISegmentedControl(items: ["Day", "Month", "Year"])
         segment.selectedSegmentIndex = 0;
-        segment.bounds.size.width = UIScreen.main.bounds.size.width
+        segment.bounds.size.width = min( UIScreen.main.bounds.size.width,  UIScreen.main.bounds.size.height)
         segment.addTarget(self, action: #selector(periodValueChanged), for:.valueChanged)
         self.tabBarController?.navigationItem.titleView = segment
     }
