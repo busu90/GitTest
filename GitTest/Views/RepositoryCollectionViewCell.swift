@@ -37,7 +37,7 @@ extension RepositoryCollectionViewCell: RepositoryCellView{
         starCountLbl.text = starCount
     }
     func display(profileImg: String?) {
-        self.profileImg.image = #imageLiteral(resourceName: "Profile")
+        self.profileImg.setImageAt(urlString: profileImg, placeholderImg: #imageLiteral(resourceName: "Profile"))
     }
     func display(isFavorite: Bool) {
         if isFavorite{

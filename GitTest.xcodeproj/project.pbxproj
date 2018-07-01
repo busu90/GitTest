@@ -26,6 +26,7 @@
 		C1AD2C9C20E7C173006718AE /* UtilTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1AD2C9B20E7C173006718AE /* UtilTests.swift */; };
 		C1AD2C9E20E7CB8D006718AE /* UIViewController-Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1AD2C9D20E7CB8D006718AE /* UIViewController-Alert.swift */; };
 		C1AD2CA120E7CF34006718AE /* RepositoriesCollectionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1AD2CA020E7CF34006718AE /* RepositoriesCollectionDataSource.swift */; };
+		C1AD2CA320E7EABE006718AE /* UIimageView-Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1AD2CA220E7EABE006718AE /* UIimageView-Cache.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +63,7 @@
 		C1AD2C9B20E7C173006718AE /* UtilTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilTests.swift; sourceTree = "<group>"; };
 		C1AD2C9D20E7CB8D006718AE /* UIViewController-Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController-Alert.swift"; sourceTree = "<group>"; };
 		C1AD2CA020E7CF34006718AE /* RepositoriesCollectionDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoriesCollectionDataSource.swift; sourceTree = "<group>"; };
+		C1AD2CA220E7EABE006718AE /* UIimageView-Cache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIimageView-Cache.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -162,6 +164,7 @@
 			children = (
 				C1AD2C9920E7B5C2006718AE /* Util.swift */,
 				C1AD2C9D20E7CB8D006718AE /* UIViewController-Alert.swift */,
+				C1AD2CA220E7EABE006718AE /* UIimageView-Cache.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -288,6 +291,7 @@
 				C1AD2C8E20E794B3006718AE /* User.swift in Sources */,
 				C1AD2C9520E7A598006718AE /* RepositoryProvider.swift in Sources */,
 				C1AD2C8B20E78667006718AE /* RepositoriesFlowLayout.swift in Sources */,
+				C1AD2CA320E7EABE006718AE /* UIimageView-Cache.swift in Sources */,
 				C1AD2C8520E76BC3006718AE /* RepositoriesPresenter.swift in Sources */,
 				C152540E20E6C211002EADA6 /* AppDelegate.swift in Sources */,
 			);
