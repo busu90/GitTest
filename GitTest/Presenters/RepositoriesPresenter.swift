@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreData
 
 protocol RepositoriesPresenter: class {
     func periodChanged(to: Int)
@@ -14,15 +15,48 @@ protocol RepositoriesPresenter: class {
     func getRepository(at: Int) -> Repository?
     func getRepoCount() -> Int
     func showDetailForRepo(at: Int)
+    func handleFavorite(repoAt : Int)
 }
 
 class RepositoriesPresenterImplementation: RepositoriesPresenter{
     private weak var view: RepositoriesView?
     private var repositories = [Repository]()
     private var repoProvider = RepositoryProvider()
+    private var favoritesProvider = LocalRepositoryProvider()
     
     init(view: RepositoriesView) {
         self.view = view
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(managedObjectContextObjectsDidChange), name: NSNotification.Name.NSManagedObjectContextObjectsDidChange, object: favoritesProvider.context)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    @objc func managedObjectContextObjectsDidChange(notification: NSNotification) {
+        guard let userInfo = notification.userInfo else { return }
+        if let inserts = userInfo[NSInsertedObjectsKey] as? Set<RepositoryDOM>, inserts.count > 0 {
+            let aux = inserts.map({ (repoDOM) -> Int in
+                return Int(repoDOM.id)
+            })
+            for r in self.repositories{
+                if aux.contains(r.id){
+                    r.isFavorite = true
+                }
+            }
+            self.view?.reloadRepozitories()
+        }else if let deletes = userInfo[NSDeletedObjectsKey] as? Set<RepositoryDOM>, deletes.count > 0 {
+            let aux = deletes.map({ (repoDOM) -> Int in
+                return Int(repoDOM.id)
+            })
+            for r in self.repositories{
+                if aux.contains(r.id){
+                    r.isFavorite = false
+                }
+            }
+            self.view?.reloadRepozitories()
+        }
     }
     
     func viewDidLoad() {
@@ -72,6 +106,24 @@ class RepositoriesPresenterImplementation: RepositoriesPresenter{
     func showDetailForRepo(at: Int) {
         let detail = Configurator.configureDetails(forRepo: repositories[at])
         view?.pushNext(next: detail)
+    }
+    
+    func handleFavorite(repoAt: Int) {
+        let repo = repositories[repoAt]
+        if repo.isFavorite{
+            repo.isFavorite = false
+            let success = favoritesProvider.removeFavorites(repository: repo)
+            if !success{
+                repo.isFavorite = true
+            }
+        }else{
+            repo.isFavorite = true
+            let success = favoritesProvider.saveToFavorites(repository: repo)
+            if !success{
+                repo.isFavorite = false
+            }
+        }
+        view?.reloadRepozitories()
     }
     
 }

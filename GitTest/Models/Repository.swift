@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreData
 
 class Repository: NSObject,Codable{
     var id: Int = 0
@@ -20,6 +21,7 @@ class Repository: NSObject,Codable{
     var language: String?
     var languagesUrl: String = ""
     var forks: Int = 0
+    var isFavorite = false
     
     enum CodingKeys:String,CodingKey
     {
@@ -34,5 +36,41 @@ class Repository: NSObject,Codable{
         case language
         case languagesUrl = "languages_url"
         case forks
+    }
+    
+    init(managedObject: RepositoryDOM) {
+        id = Int(managedObject.id)
+        name = managedObject.name ?? ""
+        owner = User(managedObject: managedObject.owner!)
+        title = managedObject.title ?? ""
+        stargazersCount = Int(managedObject.stargazersCount)
+        language = managedObject.language
+        forks = Int(managedObject.forks)
+        htmlUrl = managedObject.htmlUrl ?? ""
+        createdAt = managedObject.createdAt ?? ""
+        languagesUrl = managedObject.languagesUrl ?? ""
+        info = managedObject.info
+    }
+    
+    func managedObject(context: NSManagedObjectContext) -> RepositoryDOM {
+        let repository = RepositoryDOM(context: context)
+        repository.id = Int64(id)
+        repository.name = name
+        repository.owner = owner.managedObject(context: context)
+        repository.info = info
+        repository.stargazersCount = Int64(stargazersCount)
+        repository.language = language
+        repository.forks = Int64(forks)
+        repository.htmlUrl = htmlUrl
+        repository.createdAt = createdAt
+        repository.title = title
+        repository.languagesUrl = languagesUrl
+        return repository
+    }
+}
+
+extension Repository {
+    static public func ==(left: Repository, right: Repository) -> Bool {
+        return left.id == right.id
     }
 }

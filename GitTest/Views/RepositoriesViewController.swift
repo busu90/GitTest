@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import CoreData
 
 protocol RepositoriesView: class {
     func displayRepositoryFetchError(title: String, description:String)
@@ -35,7 +36,10 @@ class RepositoriesViewController: UIViewController{
         repoCollection.register(UINib(nibName: "RepositoryCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: RepositoryCollectionViewCell.repositoryCellIdentifier)
         configureNavBar()
         presenter.viewDidLoad()
+        
     }
+    
+    
     
     private func configureNavBar(){
         let segment: UISegmentedControl = UISegmentedControl(items: ["Day", "Month", "Year"])

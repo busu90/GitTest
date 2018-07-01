@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreData
 
 class User: NSObject, Codable{
     var login: String = ""
@@ -20,5 +21,23 @@ class User: NSObject, Codable{
         case url
         case login
         case avatarUrl = "avatar_url"
+    }
+    override init() {
+        super.init()
+    }
+    init(managedObject: UserDOM) {
+        login = managedObject.login ?? ""
+        id = Int(managedObject.id)
+        avatarUrl = managedObject.avatarUrl
+        url = managedObject.url ?? ""
+    }
+    
+    func managedObject(context: NSManagedObjectContext) -> UserDOM {
+        let user = UserDOM(context: context)
+        user.id = Int64(id)
+        user.login = login
+        user.avatarUrl = avatarUrl
+        user.url = url
+        return user
     }
 }

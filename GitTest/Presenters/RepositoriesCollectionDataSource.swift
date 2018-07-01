@@ -38,8 +38,16 @@ class RepositoriesCollectionDataSource:NSObject, UICollectionViewDataSource{
         cell.display(description: repo.info)
         cell.display(title: repo.title)
         cell.display(starCount: Util.getStarString(forStars: repo.stargazersCount))
-        cell.display(isFavorite: false)
+        cell.display(isFavorite: repo.isFavorite)
         cell.display(profileImg: repo.owner.avatarUrl)
+        cell.starImg.tag = indexPath.row
+        cell.starTap.addTarget(self, action: #selector(handleFavorite))
         return cell
+    }
+    
+    @objc func handleFavorite(gesture : UITapGestureRecognizer){
+        let v = gesture.view!
+        let tag = v.tag
+        presenter.handleFavorite(repoAt: tag)
     }
 }

@@ -18,11 +18,13 @@ class RepositoryCollectionViewCell:UICollectionViewCell{
     @IBOutlet weak var descriptionLbl: UILabel!
     
     static let repositoryCellIdentifier = "repoCellKey"
-    
+    let starTap = UITapGestureRecognizer()
     override func awakeFromNib() {
         super.awakeFromNib()
         starImg.tintColor = UIColor.blue
         nextImg.tintColor = UIColor.lightGray
+        starImg.isUserInteractionEnabled = true
+        starImg.addGestureRecognizer(starTap)
     }
 }
 
