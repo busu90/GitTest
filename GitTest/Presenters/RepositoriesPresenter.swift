@@ -8,37 +8,29 @@
 
 import Foundation
 
-protocol RepositoryCellView {
-    func display(title: String)
-    func display(description: String?)
-    func display(profileImg: String?)
-    func display(starCount: String)
-    func display(isFavorite: Bool)
-}
-
-protocol RepositoriesPresenter {
+protocol RepositoriesPresenter: class {
     func periodChanged(to: Int)
     func viewDidLoad()
+    func getRepository(at: Int) -> Repository?
+    func getRepoCount() -> Int
+    func showDetailForRepo(at: Int)
 }
 
 class RepositoriesPresenterImplementation: RepositoriesPresenter{
     private weak var view: RepositoriesView?
     private var repositories = [Repository]()
     private var repoProvider = RepositoryProvider()
-    private var repoDataSource = RepositoriesCollectionDataSource()
     
     init(view: RepositoriesView) {
         self.view = view
     }
     
     func viewDidLoad() {
-        view?.setRepositoriesDataSource(source: repoDataSource)
         periodChanged(to: 0)
     }
     
     func periodChanged(to: Int) {
         repositories = []
-        repoDataSource.setRepositories(repositories: [])
         view?.reloadRepozitories()
         var day = Calendar.current.date(byAdding: .day, value: -1, to: Date())!
         if to == 1{
@@ -63,8 +55,23 @@ class RepositoriesPresenterImplementation: RepositoriesPresenter{
     private func handleNewRepositories(_ repositories: [Repository]){
         let existing = self.repositories.count
         self.repositories.append(contentsOf: repositories)
-        repoDataSource.setRepositories(repositories: repositories)
         view?.addRepositories(count: repositories.count, at: existing)
+    }
+    
+    func getRepository(at: Int) -> Repository? {
+        if repositories.count > at{
+            return repositories[at]
+        }
+        return nil
+    }
+    
+    func getRepoCount() -> Int {
+        return repositories.count
+    }
+    
+    func showDetailForRepo(at: Int) {
+        let detail = Configurator.configureDetails(forRepo: repositories[at])
+        view?.pushNext(next: detail)
     }
     
 }

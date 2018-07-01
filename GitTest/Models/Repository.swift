@@ -11,6 +11,7 @@ import Foundation
 class Repository: NSObject,Codable{
     var id: Int = 0
     var title: String = ""
+    var name: String = ""
     var owner: User = User()
     var htmlUrl: String = ""
     var info: String?
@@ -25,6 +26,7 @@ class Repository: NSObject,Codable{
         case id
         case title = "full_name"
         case owner
+        case name
         case htmlUrl = "html_url"
         case info = "description"
         case createdAt = "created_at"

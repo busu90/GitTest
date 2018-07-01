@@ -26,7 +26,13 @@
 		C1AD2C9C20E7C173006718AE /* UtilTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1AD2C9B20E7C173006718AE /* UtilTests.swift */; };
 		C1AD2C9E20E7CB8D006718AE /* UIViewController-Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1AD2C9D20E7CB8D006718AE /* UIViewController-Alert.swift */; };
 		C1AD2CA120E7CF34006718AE /* RepositoriesCollectionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1AD2CA020E7CF34006718AE /* RepositoriesCollectionDataSource.swift */; };
-		C1AD2CA320E7EABE006718AE /* UIimageView-Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1AD2CA220E7EABE006718AE /* UIimageView-Cache.swift */; };
+		C1AD2CA320E7EABE006718AE /* UIImageView-Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1AD2CA220E7EABE006718AE /* UIImageView-Cache.swift */; };
+		C1AD2CA520E81F37006718AE /* DetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1AD2CA420E81F37006718AE /* DetailTableViewCell.swift */; };
+		C1AD2CA720E81F7C006718AE /* RepositoryDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1AD2CA620E81F7C006718AE /* RepositoryDetailViewController.swift */; };
+		C1AD2CA920E82107006718AE /* DetailsTableDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1AD2CA820E82107006718AE /* DetailsTableDataSource.swift */; };
+		C1AD2CAB20E8C405006718AE /* DetailsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1AD2CAA20E8C405006718AE /* DetailsPresenter.swift */; };
+		C1AD2CAD20E8D5BA006718AE /* RepositoriesCollectionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1AD2CAC20E8D5BA006718AE /* RepositoriesCollectionDelegate.swift */; };
+		C1AD2CAF20E8D937006718AE /* Configurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1AD2CAE20E8D937006718AE /* Configurator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,7 +69,13 @@
 		C1AD2C9B20E7C173006718AE /* UtilTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilTests.swift; sourceTree = "<group>"; };
 		C1AD2C9D20E7CB8D006718AE /* UIViewController-Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController-Alert.swift"; sourceTree = "<group>"; };
 		C1AD2CA020E7CF34006718AE /* RepositoriesCollectionDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoriesCollectionDataSource.swift; sourceTree = "<group>"; };
-		C1AD2CA220E7EABE006718AE /* UIimageView-Cache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIimageView-Cache.swift"; sourceTree = "<group>"; };
+		C1AD2CA220E7EABE006718AE /* UIImageView-Cache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView-Cache.swift"; sourceTree = "<group>"; };
+		C1AD2CA420E81F37006718AE /* DetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTableViewCell.swift; sourceTree = "<group>"; };
+		C1AD2CA620E81F7C006718AE /* RepositoryDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryDetailViewController.swift; sourceTree = "<group>"; };
+		C1AD2CA820E82107006718AE /* DetailsTableDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsTableDataSource.swift; sourceTree = "<group>"; };
+		C1AD2CAA20E8C405006718AE /* DetailsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsPresenter.swift; sourceTree = "<group>"; };
+		C1AD2CAC20E8D5BA006718AE /* RepositoriesCollectionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoriesCollectionDelegate.swift; sourceTree = "<group>"; };
+		C1AD2CAE20E8D937006718AE /* Configurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configurator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -136,6 +148,8 @@
 				C1AD2C8620E77361006718AE /* RepositoryCollectionViewCell.xib */,
 				C1AD2C8820E77378006718AE /* RepositoryCollectionViewCell.swift */,
 				C1AD2C8A20E78667006718AE /* RepositoriesFlowLayout.swift */,
+				C1AD2CA420E81F37006718AE /* DetailTableViewCell.swift */,
+				C1AD2CA620E81F7C006718AE /* RepositoryDetailViewController.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -164,7 +178,8 @@
 			children = (
 				C1AD2C9920E7B5C2006718AE /* Util.swift */,
 				C1AD2C9D20E7CB8D006718AE /* UIViewController-Alert.swift */,
-				C1AD2CA220E7EABE006718AE /* UIimageView-Cache.swift */,
+				C1AD2CA220E7EABE006718AE /* UIImageView-Cache.swift */,
+				C1AD2CAE20E8D937006718AE /* Configurator.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -174,6 +189,9 @@
 			children = (
 				C1AD2C8420E76BC3006718AE /* RepositoriesPresenter.swift */,
 				C1AD2CA020E7CF34006718AE /* RepositoriesCollectionDataSource.swift */,
+				C1AD2CA820E82107006718AE /* DetailsTableDataSource.swift */,
+				C1AD2CAA20E8C405006718AE /* DetailsPresenter.swift */,
+				C1AD2CAC20E8D5BA006718AE /* RepositoriesCollectionDelegate.swift */,
 			);
 			path = Presenters;
 			sourceTree = "<group>";
@@ -281,8 +299,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				C1AD2C9A20E7B5C2006718AE /* Util.swift in Sources */,
+				C1AD2CA720E81F7C006718AE /* RepositoryDetailViewController.swift in Sources */,
+				C1AD2CA920E82107006718AE /* DetailsTableDataSource.swift in Sources */,
 				C1AD2C9E20E7CB8D006718AE /* UIViewController-Alert.swift in Sources */,
+				C1AD2CAF20E8D937006718AE /* Configurator.swift in Sources */,
 				C1AD2C9020E7952E006718AE /* Repository.swift in Sources */,
+				C1AD2CA520E81F37006718AE /* DetailTableViewCell.swift in Sources */,
 				C1AD2C8920E77378006718AE /* RepositoryCollectionViewCell.swift in Sources */,
 				C1AD2CA120E7CF34006718AE /* RepositoriesCollectionDataSource.swift in Sources */,
 				C1AD2C9720E7B445006718AE /* RepositoriesResponce.swift in Sources */,
@@ -291,9 +313,11 @@
 				C1AD2C8E20E794B3006718AE /* User.swift in Sources */,
 				C1AD2C9520E7A598006718AE /* RepositoryProvider.swift in Sources */,
 				C1AD2C8B20E78667006718AE /* RepositoriesFlowLayout.swift in Sources */,
-				C1AD2CA320E7EABE006718AE /* UIimageView-Cache.swift in Sources */,
+				C1AD2CA320E7EABE006718AE /* UIImageView-Cache.swift in Sources */,
 				C1AD2C8520E76BC3006718AE /* RepositoriesPresenter.swift in Sources */,
 				C152540E20E6C211002EADA6 /* AppDelegate.swift in Sources */,
+				C1AD2CAB20E8C405006718AE /* DetailsPresenter.swift in Sources */,
+				C1AD2CAD20E8D5BA006718AE /* RepositoriesCollectionDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

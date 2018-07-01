@@ -11,20 +11,26 @@ import UIKit
 
 protocol RepositoriesView: class {
     func displayRepositoryFetchError(title: String, description:String)
-    func setRepositoriesDataSource(source: UICollectionViewDataSource)
     func addRepositories(count: Int, at: Int)
     func reloadRepozitories()
+    func pushNext(next: UIViewController)
 }
 
 class RepositoriesViewController: UIViewController{
     @IBOutlet weak var repoCollection: UICollectionView!
     
+    private var repoDataSource: RepositoriesCollectionDataSource!
+    private var repoDelegate: RepositoriesCollectionDelegate!
     private var presenter: RepositoriesPresenter!
     override func viewDidLoad() {
         super.viewDidLoad()
         
         presenter = RepositoriesPresenterImplementation(view: self)
+        repoDataSource = RepositoriesCollectionDataSource(presenter: presenter)
+        repoDelegate = RepositoriesCollectionDelegate(presenter: presenter)
         
+        repoCollection.dataSource = repoDataSource
+        repoCollection.delegate = repoDelegate
         repoCollection.collectionViewLayout = RepositoriesFlowLayout(cellHeight: 80)
         repoCollection.register(UINib(nibName: "RepositoryCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: RepositoryCollectionViewCell.repositoryCellIdentifier)
         configureNavBar()
@@ -45,12 +51,14 @@ class RepositoriesViewController: UIViewController{
 }
 
 extension RepositoriesViewController: RepositoriesView{
-    func displayRepositoryFetchError(title: String, description: String) {
-        presentAlert(withTitle: title, message: description)
+    func pushNext(next: UIViewController) {
+        if let nav = navigationController{
+            nav.pushViewController(next, animated: true)
+        }
     }
     
-    func setRepositoriesDataSource(source: UICollectionViewDataSource) {
-        repoCollection.dataSource = source
+    func displayRepositoryFetchError(title: String, description: String) {
+        presentAlert(withTitle: title, message: description)
     }
     
     func addRepositories(count: Int, at: Int) {
@@ -60,11 +68,5 @@ extension RepositoriesViewController: RepositoriesView{
     
     func reloadRepozitories() {
         repoCollection.reloadData()
-    }
-}
-
-extension RepositoriesViewController: UICollectionViewDelegate{
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
     }
 }

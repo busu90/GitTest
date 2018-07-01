@@ -9,25 +9,37 @@
 import Foundation
 import UIKit
 
+protocol RepositoryCellView {
+    func display(title: String)
+    func display(description: String?)
+    func display(profileImg: String?)
+    func display(starCount: String)
+    func display(isFavorite: Bool)
+}
+
+
 class RepositoriesCollectionDataSource:NSObject, UICollectionViewDataSource{
-    private var repositories: [Repository] = []
+    private var presenter: RepositoriesPresenter
     
-    func setRepositories(repositories: [Repository]){
-        self.repositories = repositories
+    init(presenter: RepositoriesPresenter) {
+        self.presenter = presenter
+        super.init()
     }
+    
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return repositories.count
+        return presenter.getRepoCount()
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RepositoryCollectionViewCell.repositoryCellIdentifier, for: indexPath) as! RepositoryCollectionViewCell
-        cell.display(description: repositories[indexPath.row].info)
-        cell.display(title: repositories[indexPath.row].title)
-        cell.display(starCount: Util.getStarString(forStars: repositories[indexPath.row].stargazersCount))
+        let repo = (presenter.getRepository(at: indexPath.row))!
+        cell.display(description: repo.info)
+        cell.display(title: repo.title)
+        cell.display(starCount: Util.getStarString(forStars: repo.stargazersCount))
         cell.display(isFavorite: false)
-        cell.display(profileImg: repositories[indexPath.row].owner.avatarUrl)
+        cell.display(profileImg: repo.owner.avatarUrl)
         return cell
     }
 }
