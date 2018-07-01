@@ -13,11 +13,17 @@ import UIKit
 public final class LocalRepositoryProvider {
     var context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
-    func getFavorites() -> [Repository]{
+    func getFavorites(inList: [Repository] = []) -> [Repository]{
         let fetchRequest: NSFetchRequest<RepositoryDOM> = RepositoryDOM.fetchRequest()
         fetchRequest.sortDescriptors = [
             NSSortDescriptor(key: #keyPath(RepositoryDOM.stargazersCount), ascending: false)
         ]
+        if inList.count > 0{
+            let ids = inList.map { (repo) -> Int in
+                return repo.id
+            }
+            fetchRequest.predicate = NSPredicate(format: "id IN %@", ids)
+        }
         fetchRequest.includesPropertyValues=true
         fetchRequest.includesPendingChanges = true
         
@@ -32,6 +38,7 @@ public final class LocalRepositoryProvider {
             return []
         }
     }
+    
     
     func saveToFavorites(repository: Repository) -> Bool {
         let fetchRequest: NSFetchRequest<RepositoryDOM> = RepositoryDOM.fetchRequest()

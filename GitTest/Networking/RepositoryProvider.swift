@@ -29,6 +29,7 @@ class RepositoryProvider{
     private let apiClient = ApiClient(urlSessionConfiguration: URLSessionConfiguration.default,
                                             completionHandlerQueue: OperationQueue.main)
     private var nextPage: String?
+    private let favoritProvider = LocalRepositoryProvider()
     
     func fetchRepositories(forNextPage: Bool, ofDate: String, completionHandler: @escaping (Result<[Repository]>) -> Void) {
         let booksApiRequest: URLRequest!
@@ -47,6 +48,14 @@ class RepositoryProvider{
                 let headers = response.httpUrlResponse.allHeaderFields
                 if let link = headers["link"]{
                     self?.nextPage = Util.getNextPageUri(fromHeaderString: link as! String)
+                }
+                let favorited = self?.favoritProvider.getFavorites(inList: repos)
+                if favorited != nil && favorited!.count > 0{
+                    for r in repos{
+                        if favorited!.contains(r){
+                            r.isFavorite = true
+                        }
+                    }
                 }
                 completionHandler(.success(repos))
             case let .failure(error):

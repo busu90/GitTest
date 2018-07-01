@@ -73,4 +73,8 @@ extension Repository {
     static public func ==(left: Repository, right: Repository) -> Bool {
         return left.id == right.id
     }
+    override func isEqual(_ object: Any?) -> Bool {
+        guard let repo = object as? Repository else { return false }
+        return self == repo
+    }
 }

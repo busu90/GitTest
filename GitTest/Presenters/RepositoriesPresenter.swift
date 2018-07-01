@@ -39,24 +39,50 @@ class RepositoriesPresenterImplementation: RepositoriesPresenter{
     
     @objc func managedObjectContextObjectsDidChange(notification: NSNotification) {
         guard let userInfo = notification.userInfo else { return }
-        if let inserts = userInfo[NSInsertedObjectsKey] as? Set<RepositoryDOM>, inserts.count > 0 {
-            let aux = inserts.map({ (repoDOM) -> Int in
-                return Int(repoDOM.id)
+        if let inserts = userInfo[NSInsertedObjectsKey] as? Set<AnyHashable>, inserts.count > 0 {
+            let insertedRepos = inserts.filter({ (repo) -> Bool in
+                repo is RepositoryDOM
             })
-            for r in self.repositories{
-                if aux.contains(r.id){
-                    r.isFavorite = true
+            guard insertedRepos.count > 0 else { return }
+            let aux = insertedRepos.map({ (repoDOM) -> Repository in
+                let repo = Repository(managedObject: repoDOM as! RepositoryDOM)
+                repo.isFavorite = true
+                return repo
+            })
+            if forFavorites{
+                let toInsert = aux.filter { (repo) -> Bool in
+                    !repositories.contains(repo)
+                }
+                repositories += toInsert
+                repositories.sort { (first, second) -> Bool in
+                    first.stargazersCount > second.stargazersCount
+                }
+            }else{
+                for r in self.repositories{
+                    if aux.contains(r){
+                        r.isFavorite = true
+                    }
                 }
             }
             self.view?.reloadRepozitories()
-        }else if let deletes = userInfo[NSDeletedObjectsKey] as? Set<RepositoryDOM>, deletes.count > 0 {
-            let aux = deletes.map({ (repoDOM) -> Int in
-                return Int(repoDOM.id)
+        }else if let deletes = userInfo[NSDeletedObjectsKey] as? Set<AnyHashable>, deletes.count > 0 {
+            let deletedRepos = deletes.filter({ (repo) -> Bool in
+                repo is RepositoryDOM
             })
+            guard deletedRepos.count > 0 else { return }
+            let aux = deletes.map({ (repoDOM) -> Int in
+                return Int((repoDOM as! RepositoryDOM).id)
+            })
+            var remaining: [Repository] = []
             for r in self.repositories{
                 if aux.contains(r.id){
                     r.isFavorite = false
+                }else{
+                    remaining.append(r)
                 }
+            }
+            if forFavorites{
+                repositories = remaining
             }
             self.view?.reloadRepozitories()
         }
