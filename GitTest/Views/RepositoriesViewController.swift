@@ -14,6 +14,7 @@ protocol RepositoriesView: class {
     func displayRepositoryFetchError(title: String, description:String)
     func addRepositories(count: Int, at: Int)
     func reloadRepozitories()
+    func reloadRepozitoriesAndSearch()
     func pushNext(next: UIViewController)
 }
 
@@ -73,11 +74,14 @@ extension RepositoriesViewController: RepositoriesView{
     }
     
     func addRepositories(count: Int, at: Int) {
-        let indexPaths = Array(at...at+count-1).map { IndexPath(item: $0, section: 0) }
+        let indexPaths = Array(at...at+count-1).map { IndexPath(item: $0, section: 1) }
         repoCollection.insertItems(at: indexPaths)
     }
     
     func reloadRepozitories() {
+        repoCollection?.reloadSections(IndexSet(integer: 1))
+    }
+    func reloadRepozitoriesAndSearch() {
         repoCollection?.reloadData()
     }
 }

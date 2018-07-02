@@ -18,6 +18,7 @@ protocol RepositoriesPresenter: class {
     func handleFavorite(repoAt : Int)
     func showPeriodSelect() -> Bool
     func getNextRepoPage()
+    func findRepos(query: String)
 }
 
 class RepositoriesPresenterImplementation: RepositoriesPresenter{
@@ -99,8 +100,6 @@ class RepositoriesPresenterImplementation: RepositoriesPresenter{
     }
     
     func periodChanged(to: Int) {
-        repositories = []
-        view?.reloadRepozitories()
         var day = Calendar.current.date(byAdding: .day, value: -1, to: Date())!
         if to == 1{
             day = Calendar.current.date(byAdding: .day, value: -7, to: Date())!
@@ -115,9 +114,18 @@ class RepositoriesPresenterImplementation: RepositoriesPresenter{
         getRepos(forNextPage: false, startDate: utcTimeZoneStr)
     }
     
-    private func getRepos(forNextPage: Bool, startDate: String){
+    private func getRepos(forNextPage: Bool, startDate: String, query: String? = nil){
         isDownloading = true
-        self.repoProvider.fetchRepositories(forNextPage: forNextPage, ofDate: startDate) {[weak self](result) in
+        if !forNextPage{
+            repoProvider.cancelAllRequests()
+            repositories = []
+            if query == nil{
+                view?.reloadRepozitoriesAndSearch()
+            }else{
+                view?.reloadRepozitories()
+            }
+        }
+        self.repoProvider.fetchRepositories(forNextPage: forNextPage, ofDate: startDate, query: query != nil ? query! : "") {[weak self](result) in
             switch result {
             case let .success(repos):
                 if repos.count > 0{
@@ -125,7 +133,8 @@ class RepositoriesPresenterImplementation: RepositoriesPresenter{
                     self?.isDownloading = false
                 }
             case let .failure(error):
-                if !forNextPage{
+                self?.isDownloading = false
+                if !forNextPage && query == nil{
                     self?.view?.displayRepositoryFetchError(title: "Error", description: error.localizedDescription)
                 }
             }
@@ -178,5 +187,23 @@ class RepositoriesPresenterImplementation: RepositoriesPresenter{
     func getNextRepoPage() {
         guard !forFavorites && !isDownloading else {return}
         getRepos(forNextPage: true, startDate: currStartDate)
+    }
+    func findRepos(query: String) {
+        let qq = query.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        if forFavorites{
+            filterFavorites(query: qq)
+        }else{
+            getRepos(forNextPage: false, startDate: currStartDate, query: qq)
+        }
+    }
+    private func filterFavorites(query: String){
+        if query.count > 0{
+            repositories = repositories.filter({ (repo) -> Bool in
+                repo.title.lowercased().contains(query.lowercased()) || (repo.info != nil && repo.info!.lowercased().contains(query.lowercased()))
+            })
+        }else{
+            repositories = favoritesProvider.getFavorites()
+        }
+        view?.reloadRepozitories()
     }
 }

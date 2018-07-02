@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C10C880820EA258C004C1D50 /* SearchReusableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10C880720EA258C004C1D50 /* SearchReusableCell.swift */; };
+		C10C880A20EA2799004C1D50 /* SearchDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10C880920EA2799004C1D50 /* SearchDelegate.swift */; };
 		C152540E20E6C211002EADA6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C152540D20E6C211002EADA6 /* AppDelegate.swift */; };
 		C152541320E6C212002EADA6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C152541120E6C212002EADA6 /* Main.storyboard */; };
 		C152541520E6C213002EADA6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C152541420E6C213002EADA6 /* Assets.xcassets */; };
@@ -48,6 +50,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C10C880720EA258C004C1D50 /* SearchReusableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchReusableCell.swift; sourceTree = "<group>"; };
+		C10C880920EA2799004C1D50 /* SearchDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchDelegate.swift; sourceTree = "<group>"; };
 		C152540A20E6C211002EADA6 /* GitTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GitTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C152540D20E6C211002EADA6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C152541220E6C212002EADA6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -154,6 +158,7 @@
 				C1AD2C8A20E78667006718AE /* RepositoriesFlowLayout.swift */,
 				C1AD2CA420E81F37006718AE /* DetailTableViewCell.swift */,
 				C1AD2CA620E81F7C006718AE /* RepositoryDetailViewController.swift */,
+				C10C880720EA258C004C1D50 /* SearchReusableCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -198,6 +203,7 @@
 				C1AD2CA820E82107006718AE /* DetailsTableDataSource.swift */,
 				C1AD2CAA20E8C405006718AE /* DetailsPresenter.swift */,
 				C1AD2CAC20E8D5BA006718AE /* RepositoriesCollectionDelegate.swift */,
+				C10C880920EA2799004C1D50 /* SearchDelegate.swift */,
 			);
 			path = Presenters;
 			sourceTree = "<group>";
@@ -312,6 +318,7 @@
 				C1AD2C9020E7952E006718AE /* Repository.swift in Sources */,
 				C1AD2CA520E81F37006718AE /* DetailTableViewCell.swift in Sources */,
 				C1AD2C8920E77378006718AE /* RepositoryCollectionViewCell.swift in Sources */,
+				C10C880820EA258C004C1D50 /* SearchReusableCell.swift in Sources */,
 				C1AD2CA120E7CF34006718AE /* RepositoriesCollectionDataSource.swift in Sources */,
 				C1AD2C9720E7B445006718AE /* RepositoriesResponce.swift in Sources */,
 				C1AD2C8320E76AD9006718AE /* RepositoriesViewController.swift in Sources */,
@@ -319,6 +326,7 @@
 				C1AD2C8E20E794B3006718AE /* User.swift in Sources */,
 				C1AD2C9520E7A598006718AE /* RepositoryProvider.swift in Sources */,
 				C1AD2CB420E8FCB5006718AE /* LocalRepositoryProvider.swift in Sources */,
+				C10C880A20EA2799004C1D50 /* SearchDelegate.swift in Sources */,
 				C1AD2CB220E8F34C006718AE /* Git.xcdatamodeld in Sources */,
 				C1AD2C8B20E78667006718AE /* RepositoriesFlowLayout.swift in Sources */,
 				C1AD2CA320E7EABE006718AE /* UIImageView-Cache.swift in Sources */,

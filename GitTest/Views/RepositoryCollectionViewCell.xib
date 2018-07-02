@@ -88,6 +88,7 @@
                     </view>
                 </subviews>
             </view>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="GFF-6N-Um6" firstAttribute="top" secondItem="uAK-Pc-CDw" secondAttribute="top" constant="10" id="15A-kU-crm"/>
                 <constraint firstItem="VPs-50-XKA" firstAttribute="leading" secondItem="GFF-6N-Um6" secondAttribute="trailing" constant="10" id="6p2-kY-hSp"/>

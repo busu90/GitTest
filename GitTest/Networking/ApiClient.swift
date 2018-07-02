@@ -77,4 +77,11 @@ class ApiClient{
         }
         dataTask.resume()
     }
+    func cancelAll(){
+        urlSession.getAllTasks { (tasks) in
+            for task in tasks{
+                task.cancel()
+            }
+        }
+    }
 }

@@ -16,8 +16,12 @@ struct RepositoriesApiRequest {
         request.httpMethod = "GET"
         return request
     }
-    static func getRequest(date: String) -> URLRequest{
-        let url: URL! = URL(string: "https://api.github.com/search/repositories?q=created%3A%3E\(date)&sort=stars&order=desc&per_page=70")
+    static func getRequest(date: String, query: String) -> URLRequest{
+        let baseUrl = "https://api.github.com/search/repositories?q="
+        let toFormat = "\(query)created:>\(date)&sort=stars&order=desc&per_page=70"
+        let formatted = toFormat.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)
+        let url: URL! = URL(string: baseUrl + formatted!)
+    
         var request = URLRequest(url: url)
         request.setValue("application/json", forHTTPHeaderField: "Accept")
         request.httpMethod = "GET"
@@ -31,17 +35,18 @@ class RepositoryProvider{
     private var nextPage: String?
     private let favoritProvider = LocalRepositoryProvider()
     
-    func fetchRepositories(forNextPage: Bool, ofDate: String, completionHandler: @escaping (Result<[Repository]>) -> Void) {
-        let booksApiRequest: URLRequest!
+    func fetchRepositories(forNextPage: Bool, ofDate: String, query: String, completionHandler: @escaping (Result<[Repository]>) -> Void) {
+        let repoApiRequest: URLRequest!
         if forNextPage && nextPage == nil{
             completionHandler(.success([]))
             return
         }else if forNextPage{
-            booksApiRequest = RepositoriesApiRequest.getRequest(url: nextPage!)
+            repoApiRequest = RepositoriesApiRequest.getRequest(url: nextPage!)
         }else{
-            booksApiRequest = RepositoriesApiRequest.getRequest(date: ofDate)
+            let fQuery = query.count > 0 ? query + " " : ""
+            repoApiRequest = RepositoriesApiRequest.getRequest(date: ofDate, query: fQuery)
         }
-        apiClient.execute(request: booksApiRequest) {[weak self] (result: Result<ApiResponse<RepositoriesResponce>>) in
+        apiClient.execute(request: repoApiRequest) {[weak self] (result: Result<ApiResponse<RepositoriesResponce>>) in
             switch result {
             case let .success(response):
                 let repos = response.entity.items
@@ -62,5 +67,9 @@ class RepositoryProvider{
                 completionHandler(.failure(error))
             }
         }
+    }
+    
+    func cancelAllRequests(){
+        apiClient.cancelAll()
     }
 }

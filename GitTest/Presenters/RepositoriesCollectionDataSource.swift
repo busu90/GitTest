@@ -20,17 +20,22 @@ protocol RepositoryCellView {
 
 class RepositoriesCollectionDataSource:NSObject, UICollectionViewDataSource{
     private var presenter: RepositoriesPresenter
-    
+    private var searchDelegate: SearchDelegate
     init(presenter: RepositoriesPresenter) {
         self.presenter = presenter
+        searchDelegate = SearchDelegate(presenter: presenter)
         super.init()
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
+        return 2
     }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return presenter.getRepoCount()
+        if section == 0{
+            return 0
+        }else{
+            return presenter.getRepoCount()
+        }
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
@@ -48,6 +53,17 @@ class RepositoriesCollectionDataSource:NSObject, UICollectionViewDataSource{
         cell.starImg.tag = indexPath.row
         cell.starTap.addTarget(self, action: #selector(handleFavorite))
         return cell
+    }
+    
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        if (kind == UICollectionElementKindSectionHeader) {
+            let headerView:SearchReusableCell =  collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: SearchReusableCell.cellKey, for: indexPath) as! SearchReusableCell
+            headerView.setQuery(nil)
+            headerView.setDelegate(delegate: searchDelegate)
+            return headerView
+        }
+        return UICollectionReusableView()
     }
     
     @objc func handleFavorite(gesture : UITapGestureRecognizer){
