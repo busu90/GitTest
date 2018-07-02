@@ -17,6 +17,7 @@ protocol RepositoriesPresenter: class {
     func showDetailForRepo(at: Int)
     func handleFavorite(repoAt : Int)
     func showPeriodSelect() -> Bool
+    func getNextRepoPage()
 }
 
 class RepositoriesPresenterImplementation: RepositoriesPresenter{
@@ -24,8 +25,9 @@ class RepositoriesPresenterImplementation: RepositoriesPresenter{
     private var repositories = [Repository]()
     private var repoProvider = RepositoryProvider()
     private var favoritesProvider = LocalRepositoryProvider()
-    
+    private var isDownloading = false
     private var forFavorites: Bool
+    private var currStartDate: String!
     
     init(view: RepositoriesView, forFavorites: Bool) {
         self.view = view
@@ -109,15 +111,27 @@ class RepositoriesPresenterImplementation: RepositoriesPresenter{
         formatter.dateFormat = "yyyy-MM-dd"
         formatter.timeZone = TimeZone(abbreviation: "UTC")
         let utcTimeZoneStr = formatter.string(from: day)
-        self.repoProvider.fetchRepositories(forNextPage: false, ofDate: utcTimeZoneStr) {(result) in
+        currStartDate = utcTimeZoneStr
+        getRepos(forNextPage: false, startDate: utcTimeZoneStr)
+    }
+    
+    private func getRepos(forNextPage: Bool, startDate: String){
+        isDownloading = true
+        self.repoProvider.fetchRepositories(forNextPage: forNextPage, ofDate: startDate) {[weak self](result) in
             switch result {
             case let .success(repos):
-                self.handleNewRepositories(repos)
+                if repos.count > 0{
+                    self?.handleNewRepositories(repos)
+                    self?.isDownloading = false
+                }
             case let .failure(error):
-                self.view?.displayRepositoryFetchError(title: "Error", description: error.localizedDescription)
+                if !forNextPage{
+                    self?.view?.displayRepositoryFetchError(title: "Error", description: error.localizedDescription)
+                }
             }
         }
     }
+    
     
     private func handleNewRepositories(_ repositories: [Repository]){
         let existing = self.repositories.count
@@ -160,5 +174,9 @@ class RepositoriesPresenterImplementation: RepositoriesPresenter{
     }
     func showPeriodSelect() -> Bool {
         return !forFavorites
+    }
+    func getNextRepoPage() {
+        guard !forFavorites && !isDownloading else {return}
+        getRepos(forNextPage: true, startDate: currStartDate)
     }
 }

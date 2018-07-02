@@ -17,7 +17,7 @@ struct RepositoriesApiRequest {
         return request
     }
     static func getRequest(date: String) -> URLRequest{
-        let url: URL! = URL(string: "https://api.github.com/search/repositories?q=created%3A%3E\(date)&sort=stars&order=desc")
+        let url: URL! = URL(string: "https://api.github.com/search/repositories?q=created%3A%3E\(date)&sort=stars&order=desc&per_page=70")
         var request = URLRequest(url: url)
         request.setValue("application/json", forHTTPHeaderField: "Accept")
         request.httpMethod = "GET"
@@ -46,7 +46,7 @@ class RepositoryProvider{
             case let .success(response):
                 let repos = response.entity.items
                 let headers = response.httpUrlResponse.allHeaderFields
-                if let link = headers["link"]{
+                if let link = headers["Link"]{
                     self?.nextPage = Util.getNextPageUri(fromHeaderString: link as! String)
                 }
                 let favorited = self?.favoritProvider.getFavorites(inList: repos)

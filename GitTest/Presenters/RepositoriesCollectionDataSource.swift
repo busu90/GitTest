@@ -33,6 +33,11 @@ class RepositoriesCollectionDataSource:NSObject, UICollectionViewDataSource{
         return presenter.getRepoCount()
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        if Double(indexPath.row) > Double(presenter.getRepoCount()) * 0.7{
+            presenter.getNextRepoPage()
+        }
+        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RepositoryCollectionViewCell.repositoryCellIdentifier, for: indexPath) as! RepositoryCollectionViewCell
         let repo = (presenter.getRepository(at: indexPath.row))!
         cell.display(description: repo.info)

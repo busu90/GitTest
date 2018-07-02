@@ -78,6 +78,6 @@ extension RepositoriesViewController: RepositoriesView{
     }
     
     func reloadRepozitories() {
-        repoCollection.reloadData()
+        repoCollection?.reloadData()
     }
 }
