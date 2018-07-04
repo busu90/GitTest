@@ -24,16 +24,18 @@ protocol RepositoriesPresenter: class {
 class RepositoriesPresenterImplementation: RepositoriesPresenter{
     private weak var view: RepositoriesView?
     private var repositories = [Repository]()
-    private var repoProvider = RepositoryProvider()
-    private var favoritesProvider = LocalRepositoryProvider()
+    private var repoProvider: RepositoryProvider
+    private var favoritesProvider: LocalRepositoryProvider
     private var isDownloading = false
     private var forFavorites: Bool
     private var currStartDate: String!
     
-    init(view: RepositoriesView, forFavorites: Bool) {
+    init(view: RepositoriesView, repositoriesProvider: RepositoryProvider, favoritesProvider: LocalRepositoryProvider, forFavorites: Bool) {
         self.view = view
         self.forFavorites = forFavorites
-        NotificationCenter.default.addObserver(self, selector: #selector(managedObjectContextObjectsDidChange), name: NSNotification.Name.NSManagedObjectContextObjectsDidChange, object: favoritesProvider.context)
+        self.repoProvider = repositoriesProvider
+        self.favoritesProvider = favoritesProvider
+        NotificationCenter.default.addObserver(self, selector: #selector(managedObjectContextObjectsDidChange), name: NSNotification.Name.NSManagedObjectContextObjectsDidChange, object: favoritesProvider.getContext())
     }
     
     deinit {

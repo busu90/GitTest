@@ -10,10 +10,18 @@ import Foundation
 import CoreData
 import UIKit
 
-public final class LocalRepositoryProvider {
+protocol LocalRepositoryProvider {
+    func getFavorites() -> [Repository]
+    func getFavorites(inList: [Repository]) -> [Repository]
+    func saveToFavorites(repository: Repository) -> Bool
+    func removeFavorites(repository: Repository) -> Bool
+    func getContext() -> NSManagedObjectContext
+}
+
+public final class LocalRepositoryProviderInplementation:  LocalRepositoryProvider{
     var context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
-    func getFavorites(inList: [Repository] = []) -> [Repository]{
+    func getFavorites(inList: [Repository]) -> [Repository]{
         let fetchRequest: NSFetchRequest<RepositoryDOM> = RepositoryDOM.fetchRequest()
         fetchRequest.sortDescriptors = [
             NSSortDescriptor(key: #keyPath(RepositoryDOM.stargazersCount), ascending: false)
@@ -39,6 +47,9 @@ public final class LocalRepositoryProvider {
         }
     }
     
+    func getFavorites() -> [Repository] {
+        return getFavorites(inList: [])
+    }
     
     func saveToFavorites(repository: Repository) -> Bool {
         let fetchRequest: NSFetchRequest<RepositoryDOM> = RepositoryDOM.fetchRequest()
@@ -71,6 +82,10 @@ public final class LocalRepositoryProvider {
         } catch {
             return false
         }
+    }
+    
+    func getContext() -> NSManagedObjectContext {
+        return context
     }
     
 }

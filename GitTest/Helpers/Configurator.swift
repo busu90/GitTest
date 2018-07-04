@@ -21,8 +21,11 @@ class Configurator {
     
     static func configureRepoList(forFavorites: Bool = false) ->  RepositoriesViewController{
         let repoListView = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "repoListController") as! RepositoriesViewController
-        
-        let presenter = RepositoriesPresenterImplementation(view: repoListView, forFavorites: forFavorites)
+        let apiClient = ApiClientImplementation(urlSessionConfiguration: URLSessionConfiguration.default,
+                  completionHandlerQueue: OperationQueue.main)
+        let localRepoProvider = LocalRepositoryProviderInplementation()
+        let repoProvider = RepositoryProviderImplementation(favoritesProvider: localRepoProvider, apiClient: apiClient)
+        let presenter = RepositoriesPresenterImplementation(view: repoListView, repositoriesProvider: repoProvider, favoritesProvider: localRepoProvider, forFavorites: forFavorites)
         repoListView.presenter = presenter
         return repoListView
     }

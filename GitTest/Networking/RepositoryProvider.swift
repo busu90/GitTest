@@ -20,20 +20,25 @@ struct RepositoriesApiRequest {
         let baseUrl = "https://api.github.com/search/repositories?q="
         let toFormat = "\(query)created:>\(date)&sort=stars&order=desc&per_page=70"
         let formatted = toFormat.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)
-        let url: URL! = URL(string: baseUrl + formatted!)
-    
-        var request = URLRequest(url: url)
-        request.setValue("application/json", forHTTPHeaderField: "Accept")
-        request.httpMethod = "GET"
-        return request
+        
+        return getRequest(url: baseUrl + formatted!)
     }
 }
 
-class RepositoryProvider{
-    private let apiClient = ApiClient(urlSessionConfiguration: URLSessionConfiguration.default,
-                                            completionHandlerQueue: OperationQueue.main)
+protocol RepositoryProvider{
+    func fetchRepositories(forNextPage: Bool, ofDate: String, query: String, completionHandler: @escaping (Result<[Repository]>) -> Void)
+    func cancelAllRequests()
+}
+
+class RepositoryProviderImplementation: RepositoryProvider{
+    private let apiClient: ApiClient
     private var nextPage: String?
-    private let favoritProvider = LocalRepositoryProvider()
+    private let favoritesProvider: LocalRepositoryProvider
+    
+    init(favoritesProvider: LocalRepositoryProvider, apiClient: ApiClient) {
+        self.favoritesProvider = favoritesProvider
+        self.apiClient = apiClient
+    }
     
     func fetchRepositories(forNextPage: Bool, ofDate: String, query: String, completionHandler: @escaping (Result<[Repository]>) -> Void) {
         let repoApiRequest: URLRequest!
@@ -54,7 +59,7 @@ class RepositoryProvider{
                 if let link = headers["Link"]{
                     self?.nextPage = Util.getNextPageUri(fromHeaderString: link as! String)
                 }
-                let favorited = self?.favoritProvider.getFavorites(inList: repos)
+                let favorited = self?.favoritesProvider.getFavorites(inList: repos)
                 if favorited != nil && favorited!.count > 0{
                     for r in repos{
                         if favorited!.contains(r){

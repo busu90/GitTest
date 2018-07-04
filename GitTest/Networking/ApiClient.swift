@@ -43,8 +43,12 @@ struct ApiResponse<T: Codable> {
     }
 }
 
+protocol ApiClient {
+    func execute<T>(request: URLRequest, completionHandler: @escaping (Result<ApiResponse<T>>) -> Void)
+    func cancelAll()
+}
 
-class ApiClient{
+class ApiClientImplementation: ApiClient{
     let urlSession: URLSession
     init(urlSessionConfiguration: URLSessionConfiguration, completionHandlerQueue: OperationQueue) {
         urlSession = URLSession(configuration: urlSessionConfiguration, delegate: nil, delegateQueue: completionHandlerQueue)
