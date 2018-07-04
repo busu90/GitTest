@@ -39,7 +39,7 @@ class RepositoriesCollectionDataSource:NSObject, UICollectionViewDataSource{
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        if Double(indexPath.row) > Double(presenter.getRepoCount()) * 0.7{
+        if Double(indexPath.row) > max(Double(presenter.getRepoCount()) * 0.7, Double(presenter.getRepoCount() - 15)){
             presenter.getNextRepoPage()
         }
         
