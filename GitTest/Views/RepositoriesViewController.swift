@@ -50,7 +50,7 @@ class RepositoriesViewController: UIViewController{
     }
     
     private func configureNavBar(){
-        let segment: UISegmentedControl = UISegmentedControl(items: ["Day", "Month", "Year"])
+        let segment: UISegmentedControl = UISegmentedControl(items: ["Day", "Week", "Month"])
         segment.selectedSegmentIndex = 0;
         segment.bounds.size.width = min( UIScreen.main.bounds.size.width,  UIScreen.main.bounds.size.height)
         segment.addTarget(self, action: #selector(periodValueChanged), for:.valueChanged)
