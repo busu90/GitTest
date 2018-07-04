@@ -24,9 +24,10 @@ class RepositoriesViewController: UIViewController{
     private var repoDataSource: RepositoriesCollectionDataSource!
     private var repoDelegate: RepositoriesCollectionDelegate!
     var presenter: RepositoriesPresenter!
+    var searchDelegate: SearchDelegate!
     override func viewDidLoad() {
         super.viewDidLoad()
-        repoDataSource = RepositoriesCollectionDataSource(presenter: presenter)
+        repoDataSource = RepositoriesCollectionDataSource(presenter: presenter, searchDelegate: searchDelegate)
         repoDelegate = RepositoriesCollectionDelegate(presenter: presenter)
         
         repoCollection.dataSource = repoDataSource

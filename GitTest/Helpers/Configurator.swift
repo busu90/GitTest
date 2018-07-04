@@ -27,6 +27,7 @@ class Configurator {
         let repoProvider = RepositoryProviderImplementation(favoritesProvider: localRepoProvider, apiClient: apiClient)
         let presenter = RepositoriesPresenterImplementation(view: repoListView, repositoriesProvider: repoProvider, favoritesProvider: localRepoProvider, forFavorites: forFavorites)
         repoListView.presenter = presenter
+        repoListView.searchDelegate = SearchDelegate(presenter: presenter)
         return repoListView
     }
     

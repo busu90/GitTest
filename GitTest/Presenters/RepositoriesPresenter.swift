@@ -118,11 +118,13 @@ class RepositoriesPresenterImplementation: RepositoriesPresenter{
     
     private func getRepos(forNextPage: Bool, startDate: String, query: String? = nil){
         isDownloading = true
+        var showAlertOnError = false
         if !forNextPage{
             repoProvider.cancelAllRequests()
             repositories = []
             if query == nil{
                 view?.reloadRepozitoriesAndSearch()
+                showAlertOnError = true
             }else{
                 view?.reloadRepozitories()
             }
@@ -136,7 +138,7 @@ class RepositoriesPresenterImplementation: RepositoriesPresenter{
                 }
             case let .failure(error):
                 self?.isDownloading = false
-                if !forNextPage && query == nil{
+                if showAlertOnError && (error as NSError).code != Constants.cancelledRequestErrorCode{
                     self?.view?.displayRepositoryFetchError(title: "Error", description: error.localizedDescription)
                 }
             }

@@ -26,7 +26,6 @@ struct ApiResponse<T: Codable> {
     let entity: T
     let httpUrlResponse: HTTPURLResponse
     let data: Data?
-    
     init(data: Data?, httpUrlResponse: HTTPURLResponse) throws {
         do {
             guard let data = data else {throw NSError()}
@@ -60,8 +59,8 @@ class ApiClientImplementation: ApiClient{
         let dataTask = urlSession.dataTask(with: request) { (data, response, error) in
             guard let httpUrlResponse = response as? HTTPURLResponse else {
                 completionHandler(.failure(NSError(domain: "com.stanwood.GitTest",
-                                                   code: 999,
-                                                   userInfo: [NSLocalizedDescriptionKey: "There was a problem with the request"])))
+                                                   code: Constants.cancelledRequestErrorCode,
+                                                   userInfo: [NSLocalizedDescriptionKey: "The request was cancelled"])))
                 return
             }
             

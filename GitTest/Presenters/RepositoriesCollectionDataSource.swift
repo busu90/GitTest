@@ -21,9 +21,9 @@ protocol RepositoryCellView {
 class RepositoriesCollectionDataSource:NSObject, UICollectionViewDataSource{
     private var presenter: RepositoriesPresenter
     private var searchDelegate: SearchDelegate
-    init(presenter: RepositoriesPresenter) {
+    init(presenter: RepositoriesPresenter, searchDelegate: SearchDelegate) {
         self.presenter = presenter
-        searchDelegate = SearchDelegate(presenter: presenter)
+        self.searchDelegate = searchDelegate
         super.init()
     }
     
